@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sierra Analytics | Inteligencia Sistémica</title>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FEF8EE; /* Palette 50 */
+            color: #3F1A0B; /* Palette 950 */
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .math-grid {
+            background-image: linear-gradient(#F8DDB0 1px, transparent 1px),
+            linear-gradient(90deg, #F8DDB0 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+        }
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.4;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+        }
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        .highlight-text {
+            background: linear-gradient(120deg, transparent 0%, transparent 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            transition: background-size 0.25s ease-in;
+        }
+        .highlight-text:hover {
+            background-size: 100% 100%;
+            background-image: linear-gradient(120deg, #F8DDB0 0%, #F8DDB0 100%);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- COMPONENTS ---
+
+        // 1. SYSTEM VISUAL (Representing "Internal vs External")
+        const SystemicVisual = () => (
+            <svg viewBox="0 0 200 200" className="w-full h-full opacity-90" style={{ mixBlendMode: 'multiply' }}>
+                {/* The "Outside" World - Dynamic/Chaos */}
+                <circle cx="100" cy="100" r="90" fill="none" stroke="#F8DDB0" strokeWidth="0.5" strokeDasharray="4 4" className="animate-[spin_60s_linear_infinite]" />
+                <path d="M100,10 A90,90 0 0,1 190,100" fill="none" stroke="#EA8725" strokeWidth="0.5" strokeOpacity="0.5" />
+                
+                {/* The "Company" - trying to connect */}
+                <path 
+                    d="M100,60 Q130,60 130,100 T100,140 T70,100 T100,60" 
+                    fill="none" 
+                    stroke="#3F1A0B" 
+                    strokeWidth="0.8"
+                />
+                
+                {/* The Connection/Translation Points */}
+                <line x1="100" y1="10" x2="100" y2="60" stroke="#EA8725" strokeWidth="0.5" strokeDasharray="2 2" />
+                <line x1="190" y1="100" x2="130" y2="100" stroke="#EA8725" strokeWidth="0.5" strokeDasharray="2 2" />
+                
+                <circle cx="100" cy="60" r="1.5" fill="#3F1A0B" />
+                <circle cx="130" cy="100" r="1.5" fill="#3F1A0B" />
+                <circle cx="100" cy="10" r="1.5" fill="#EA8725" />
+            </svg>
+        );
+
+        // 2. NAV COMPONENT
+        const Navbar = () => (
+            <nav className="fixed top-0 w-full p-8 flex justify-between items-center z-40 bg-[#FEF8EE]/95 backdrop-blur-sm border-b border-[#F8DDB0]">
+                <div className="text-xl tracking-tighter font-medium serif text-[#3F1A0B]">
+                    Sierra Analytics<span className="text-[#EA8725]">.</span>
+                </div>
+                <div className="hidden md:flex gap-8 text-sm font-medium tracking-wide text-[#753819]">
+                    <a href="#vision" className="hover:text-[#3F1A0B] transition-colors">Visión Sistémica</a>
+                    <a href="#traduccion" className="hover:text-[#3F1A0B] transition-colors">Traducción</a>
+                    <a href="#contacto" className="hover:text-[#3F1A0B] transition-colors">Contacto</a>
+                </div>
+                <a href="#contacto" className="hidden md:block border border-[#3F1A0B] px-6 py-2 text-xs uppercase tracking-widest hover:bg-[#3F1A0B] hover:text-[#FEF8EE] transition-all duration-500">
+                    Diagnóstico
+                </a>
+            </nav>
+        );
+
+        // 3. HERO SECTION - Focus: Translation & Understanding
+        const Hero = () => (
+            <section className="min-h-screen flex flex-col md:flex-row pt-32 px-6 md:px-24 items-center relative overflow-hidden">
+                <div className="absolute inset-0 math-grid -z-10"></div>
+                
+                <div className="w-full md:w-3/5 z-10 space-y-8 pr-0 md:pr-12">
+                    <p className="text-[#EA8725] text-xs font-bold tracking-[0.2em] uppercase mb-4 flex items-center gap-2">
+                        <span className="w-8 h-[1px] bg-[#EA8725]"></span>
+                        Más allá de los datos
+                    </p>
+                    <h1 className="text-5xl md:text-6xl lg:text-7xl leading-[1.1] text-[#3F1A0B]">
+                        Su empresa habla un idioma.<br/>
+                        <span className="serif italic text-[#6D2E14]">El mercado habla otro.</span>
+                    </h1>
+                    <p className="text-[#753819] max-w-lg text-lg leading-relaxed font-light mt-8">
+                        Tiene mucha información, pero poca claridad. Ayudamos a líderes no técnicos y técnicos a entender sus propios flujos de información y a conectar su estrategia con un mundo externo que cambia rápido.
+                    </p>
+                    <div className="pt-8 flex flex-col md:flex-row gap-4 items-start md:items-center">
+                        <a href="#vision" className="border-b border-[#3F1A0B] pb-1 text-[#3F1A0B] hover:text-[#EA8725] hover:border-[#EA8725] transition-all text-sm uppercase tracking-widest">
+                            Entender la metodología
+                        </a>
+                    </div>
+                </div>
+
+                <div className="w-full md:w-2/5 h-[40vh] md:h-auto relative mt-12 md:mt-0 flex items-center justify-center p-8">
+                    <SystemicVisual />
+                    <div className="absolute bottom-10 right-0 font-mono text-xs text-[#EA8725] opacity-60 text-right">
+                        fig 1.0<br/>Adaptación al entorno
+                    </div>
+                </div>
+            </section>
+        );
+
+        // 4. THE PROBLEM (Systemic Pain Points)
+        const ProblemSection = () => (
+            <section id="vision" className="bg-[#FEF8EE] py-32 px-6 md:px-24 border-t border-[#F8DDB0]">
+                <div className="max-w-4xl mx-auto">
+                    <h2 className="text-3xl md:text-4xl serif leading-tight mb-16 text-center text-[#3F1A0B]">
+                        Las necesidades que <span className="italic border-b border-[#EA8725]">aún no sabe</span> que tiene.
+                    </h2>
+                    
+                    <div className="grid md:grid-cols-2 gap-16">
+                        <div className="space-y-6">
+                            <h3 className="text-xl serif text-[#3F1A0B] flex items-center gap-3">
+                                <span className="text-[#EA8725] text-sm font-mono">01</span>
+                                El "Ombliguismo" Corporativo
+                            </h3>
+                            <p className="text-[#753819] font-light leading-relaxed text-sm">
+                                La mejora continua tradicional se enfoca desde adentro y solo en promedios. Pero su empresa vive en un sistema dinámico y complejo. ¿Cómo le afectan los cambios internos y de su entorno? Si solo mira adentro, es vulnerable.
+                            </p>
+                            <p className="text-[#753819] font-light leading-relaxed text-sm">
+                                ¿Qué pasaría si...? ¿Cómo reaccionará mi competencia si cambio mi política de precios mañana? ¿Qué tan vulnerable es mi flujo de caja ante un cambio externo?
+
+                            </p>
+                        </div>
+
+                        <div className="space-y-6">
+                            <h3 className="text-xl serif text-[#3F1A0B] flex items-center gap-3">
+                                <span className="text-[#EA8725] text-sm font-mono">02</span>
+                                Flujos de Información Rotos
+                            </h3>
+                            <p className="text-[#753819] font-light leading-relaxed text-sm">
+                                No se trata de tener más reportes, se trata de entender el flujo. A veces la información existe pero no "camina" hacia donde se toman las decisiones. Eso genera un lío operativo y puntos ciegos peligrosos.
+                            </p>
+                            <p className="text-[#753819] font-light leading-relaxed text-sm">
+                                ¿Por qué inyectar capital no está acelerando mis resultados? ¿Cómo funciona mi motor interno? ¿Cuál es la variable que realmente mueve la aguja?
+
+                            </p>
+                        </div>
+                        
+                        <div className="space-y-6">
+                            <h3 className="text-xl serif text-[#3F1A0B] flex items-center gap-3">
+                                <span className="text-[#EA8725] text-sm font-mono">03</span>
+                                La Trampa de la Rigidez
+                            </h3>
+                            <p className="text-[#753819] font-light leading-relaxed text-sm">
+                                Hay procesos que parecen eficientes pero son inflexibles. Cuando el mercado cambia (y siempre cambia), lo rígido se rompe. Identificamos qué partes de su negocio son poco escalables antes de que sea un problema.
+                            </p>
+                            <p className="text-[#753819] font-light leading-relaxed text-sm">
+                                ¿Qué tan fácil me puedo romper? ¿Cuál es mi 'punto de no retorno'? ¿Qué parte de mi negocio es inmune a perturbaciones leves? ¿Mis metas financieras son matemáticamente alcanzables con mi estructura actual?
+                            </p>    
+                        </div>
+
+                        <div className="space-y-6">
+                            <h3 className="text-xl serif text-[#3F1A0B] flex items-center gap-3">
+                                <span className="text-[#EA8725] text-sm font-mono">04</span>
+                                Los "Huecos" en su Mapa
+                            </h3>
+                            <p className="text-[#753819] font-light leading-relaxed text-sm">
+                                Sus reportes actuales le dicen cuánto vendió o cuánto gastó, pero son listas ciegas. No le muestran dónde están los vacíos del mercado ni las desconexiones en su operación. Nosotros revelamos los "agujeros" invisibles donde se está escapando el dinero o donde hay una oportunidad virgen que sus competidores no ven.
+                            </p>
+                            <p className="text-[#753819] font-light leading-relaxed text-sm">
+                                ¿Dónde estoy parado? ¿Mi crecimiento es real o es un espejismo de un grupo pequeño de datos?¿Dónde están los 'huecos' por los que se escapa el valor?
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        // 5. SERVICES TRANSLATED (Plain Language)
+        const Services = () => (
+            <section id="traduccion" className="bg-[#3F1A0B] text-[#FEF8EE] py-32 px-6 md:px-24">
+                <div className="max-w-6xl mx-auto">
+                    <div className="mb-16 border-b border-[#EA8725]/30 pb-8">
+                        <h2 className="text-4xl serif text-[#FEF8EE]">Lo que hacemos</h2>
+                        <p className="text-[#F8DDB0] mt-4 font-light opacity-80 max-w-2xl">
+                            Sin tecnicismos. Sin cajas negras. Solo claridad estratégica.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* Service 1 */}
+                        <div className="group cursor-default">
+                            <div className="h-full border border-[#F8DDB0]/20 p-8 hover:bg-[#FEF8EE]/5 transition-colors duration-500">
+                                <div className="mb-6 text-[#EA8725] opacity-80">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                                </div>
+                                <h3 className="text-xl serif mb-4">Radar de Entorno</h3>
+                                <p className="text-sm text-[#F8DDB0]/70 leading-relaxed">
+                                    Dejamos de mirar solo el ombligo de la empresa. Analizamos variables externas para ver cómo golpearán su modelo de negocio en tiempo futuro.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Service 2 */}
+                        <div className="group cursor-default">
+                            <div className="h-full border border-[#F8DDB0]/20 p-8 hover:bg-[#FEF8EE]/5 transition-colors duration-500">
+                                <div className="mb-6 text-[#EA8725] opacity-80">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 12h20"/><path d="M12 2v20"/><path d="M12 2a10 10 0 0 1 0 20"/></svg>
+                                </div>
+                                <h3 className="text-xl serif mb-4">Detección de Rigidez</h3>
+                                <p className="text-sm text-[#F8DDB0]/70 leading-relaxed">
+                                    Encontramos los procesos que son "frágiles". Esas partes de su operación que no aguantan un crecimiento rápido o un cambio brusco del mercado.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Service 3 */}
+                        <div className="group cursor-default">
+                            <div className="h-full border border-[#F8DDB0]/20 p-8 hover:bg-[#FEF8EE]/5 transition-colors duration-500">
+                                <div className="mb-6 text-[#EA8725] opacity-80">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                </div>
+                                <h3 className="text-xl serif mb-4">Traducción de Datos</h3>
+                                <p className="text-sm text-[#F8DDB0]/70 leading-relaxed">
+                                    Tomamos el caos de sus bases de datos y lo convertimos en respuestas simples que cualquier miembro de la junta directiva puede usar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        // 6. CONTACT / CONVERSATION
+        const Footer = () => {
+            // Reemplaza esto con tu número real
+            const whatsappNumber = "+573176406113"; 
+            const text = encodeURIComponent("Hola, me gustaría agendar una conversación contigo.");
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${text}`;
+
+            return (
+                <footer id="contacto" className="py-24 px-6 md:px-24 bg-[#FEF8EE] relative">
+                    <div className="max-w-3xl mx-auto text-center space-y-8">
+                        <p className="text-xs uppercase tracking-[0.3em] text-[#EA8725]">Hablemos</p>
+                        <h2 className="text-4xl md:text-5xl serif text-[#3F1A0B]">
+                            ¿Su empresa es flexible o solo tiene suerte?
+                        </h2>
+                        <p className="text-[#753819] font-light leading-relaxed max-w-xl mx-auto">
+                            Probablemente tenga necesidades que no ha identificado y oportunidades de mejora que están ocultas en el ruido de su información.
+                        </p>
+                        
+                        <div className="pt-8">
+                             <a 
+                                href={whatsappUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block bg-[#3F1A0B] text-[#FEF8EE] px-10 py-4 text-sm uppercase tracking-widest hover:bg-[#EA8725] transition-all duration-500 shadow-xl shadow-[#3F1A0B]/10"
+                            >
+                                Agendar una conversación
+                            </a>
+                            <p className="mt-6 text-xs text-[#753819]/60">
+                                Sin compromiso técnico. Solo exploración estratégica.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="flex justify-between items-end mt-32 text-[10px] uppercase tracking-widest text-[#753819]/60 border-t border-[#F8DDB0] pt-8">
+                        <span>© 2026 Sierra Analytics.</span>
+                        <div className="space-x-4">
+                            <a href="#" className="hover:text-[#3F1A0B]">LinkedIn</a>
+                            <a href="#" className="hover:text-[#3F1A0B]">Escritos</a>
+                        </div>
+                    </div>
+                </footer>
+            );
+        };
+
+        // MAIN APP COMPONENT
+        const App = () => {
+            useEffect(() => {
+                lucide.createIcons();
+            }, []);
+
+            return (
+                <div className="min-h-screen relative selection:bg-[#F8DDB0] selection:text-[#3F1A0B]">
+                    <div className="grain"></div>
+                    <Navbar />
+                    <main>
+                        <Hero />
+                        <ProblemSection />
+                        <Services />
+                    </main>
+                    <Footer />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
