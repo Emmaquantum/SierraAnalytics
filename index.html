@@ -221,27 +221,129 @@
         );
 
          // --- NEW DIAGNOSTIC SECTION ---
-        const DiagnosticSection = () => (
-            <section id="diagnostico-section" className="py-32 px-6 md:px-24 bg-[#f4f9f9]">
-                <div className="max-w-4xl mx-auto text-center mb-12">
-                    <h2 className="text-4xl serif text-[#2E3849] mb-4">Diagnóstico Inicial</h2>
-                    <p className="text-[#2E3849]/70 font-light max-w-2xl mx-auto">
-                        Identifique cuellos de botella y oportunidades de optimización matemática en su estructura actual.
-                    </p>
-                </div>
-                <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-sm overflow-hidden border border-[#2E3849]/5">
-                    {/* Reemplaza el src con tu link de Tally o Google Forms */}
-                    <iframe 
-                        data-tally-src="https://tally.so/embed/TU_LINK_DE_TALLY_AQUI?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
-                        loading="lazy" 
-                        width="100%" 
-                        height="500" 
-                        frameBorder="0" 
-                        title="Sierra Analytics Diagnostic">
-                    </iframe>
-                </div>
-            </section>
-        );
+        const DiagnosticSection = () => {
+            const [formData, setFormData] = useState({
+                nombre: '', empresa: '', sector: '', desafio: '', email: ''
+            });
+            const [status, setStatus] = useState('idle'); // idle, loading, success
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setStatus('loading');
+                
+                // REEMPLAZA ESTA URL con la que obtuviste de Google Apps Script
+                const SCRIPT_URL = 'TU_URL_DE_APPS_SCRIPT_AQUI';
+
+                try {
+                    await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors', 
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+                    setStatus('success');
+                    setFormData({ nombre: '', empresa: '', sector: '', desafio: '', email: '' });
+                } catch (error) {
+                    console.error('Error al enviar datos:', error);
+                    setStatus('idle');
+                    alert('Hubo un error al enviar el diagnóstico. Por favor, intente de nuevo.');
+                }
+            };
+
+            // Vista de éxito al enviar el formulario
+            if (status === 'success') {
+                return (
+                    <section id="diagnostico-section" className="py-32 px-6 bg-[#f4f9f9] text-center">
+                        <div className="max-w-md mx-auto space-y-6">
+                            <div className="w-16 h-16 bg-[#216675]/10 rounded-full flex items-center justify-center mx-auto">
+                                <i data-lucide="check-circle" className="w-8 h-8 text-[#216675]"></i>
+                            </div>
+                            <h2 className="text-3xl serif text-[#2E3849]">Solicitud Recibida</h2>
+                            <p className="text-[#2E3849]/70 font-light leading-relaxed">
+                                Los datos han sido integrados a nuestro modelo de análisis. Julián Sierra se pondrá en contacto con usted para discutir los hallazgos sistémicos.
+                            </p>
+                            <button 
+                                onClick={() => setStatus('idle')} 
+                                className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#216675] border-b border-[#216675] pb-1 hover:opacity-70 transition-opacity"
+                            >
+                                Realizar otro diagnóstico
+                            </button>
+                        </div>
+                    </section>
+                );
+            }
+
+            return (
+                <section id="diagnostico-section" className="py-32 px-6 md:px-24 bg-[#f4f9f9]">
+                    {/* Encabezado Centrado Solicitado */}
+                    <div className="max-w-4xl mx-auto text-center mb-16">
+                        <h2 className="text-4xl serif text-[#2E3849] mb-4">Diagnóstico Inicial</h2>
+                        <p className="text-[#2E3849]/70 font-light max-w-2xl mx-auto">
+                            Identifique cuellos de botella y oportunidades de optimización matemática en su estructura actual.
+                        </p>
+                    </div>
+
+                    {/* Cuerpo del Formulario */}
+                    <div className="max-w-2xl mx-auto">
+                        <form onSubmit={handleSubmit} className="space-y-4 bg-white/50 p-8 md:p-12 rounded-sm border border-[#2E3849]/5 shadow-sm">
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase tracking-widest font-bold text-[#2E3849]/50 ml-1">Información General</label>
+                                <input 
+                                    type="text" placeholder="Nombre completo" required
+                                    className="w-full p-4 bg-white border border-[#2E3849]/10 text-sm focus:outline-none focus:border-[#216675] transition-colors"
+                                    onChange={e => setFormData({...formData, nombre: e.target.value})}
+                                    value={formData.nombre}
+                                />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <input 
+                                        type="text" placeholder="Empresa" required
+                                        className="w-full p-4 bg-white border border-[#2E3849]/10 text-sm focus:outline-none focus:border-[#216675] transition-colors"
+                                        onChange={e => setFormData({...formData, empresa: e.target.value})}
+                                        value={formData.empresa}
+                                    />
+                                    <input 
+                                        type="text" placeholder="Sector" required
+                                        className="w-full p-4 bg-white border border-[#2E3849]/10 text-sm focus:outline-none focus:border-[#216675] transition-colors"
+                                        onChange={e => setFormData({...formData, sector: e.target.value})}
+                                        value={formData.sector}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase tracking-widest font-bold text-[#2E3849]/50 ml-1">Análisis de Desafío</label>
+                                <textarea 
+                                    placeholder="Describa su mayor desafío operativo actual (procesos, inventarios, incertidumbre...)" required
+                                    className="w-full p-4 bg-white border border-[#2E3849]/10 text-sm h-32 focus:outline-none focus:border-[#216675] transition-colors resize-none"
+                                    onChange={e => setFormData({...formData, desafio: e.target.value})}
+                                    value={formData.desafio}
+                                ></textarea>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase tracking-widest font-bold text-[#2E3849]/50 ml-1">Contacto Corporativo</label>
+                                <input 
+                                    type="email" placeholder="Email (ej: nombre@empresa.com)" required
+                                    className="w-full p-4 bg-white border border-[#2E3849]/10 text-sm focus:outline-none focus:border-[#216675] transition-colors"
+                                    onChange={e => setFormData({...formData, email: e.target.value})}
+                                    value={formData.email}
+                                />
+                            </div>
+
+                            <div className="pt-4">
+                                <button 
+                                    type="submit" 
+                                    disabled={status === 'loading'}
+                                    className="btn-primary w-full py-5 text-xs uppercase tracking-[0.2em] font-bold shadow-md hover:shadow-lg disabled:opacity-50 transition-all"
+                                >
+                                    {status === 'loading' ? 'Procesando Arquitectura...' : 'Iniciar Diagnóstico Matemático'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            );
+        };
 
         // 6. FOOTER & CONTACTO (Versión Formal)
         const Footer = () => {
