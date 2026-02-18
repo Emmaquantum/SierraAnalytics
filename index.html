@@ -73,6 +73,49 @@
             background-color: #2E3849;
             color: #FEFEFE;
         }
+        .spin-container {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 100;
+        }
+        .spin-trigger {
+            width: 60px;
+            height: 60px;
+            background-color: #216675;
+            color: #FEFEFE;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(33, 102, 117, 0.3);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .spin-trigger.active {
+            transform: rotate(135deg); /* Simula el cambio de fase */
+            background-color: #2E3849;
+        }
+        .spin-option {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .spin-container.open .spin-option {
+            opacity: 1;
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body>
@@ -119,7 +162,7 @@
                 </div>
                 
                 <div className="hidden md:flex gap-10 text-xs font-medium uppercase tracking-widest text-[#2E3849]/70">
-                    <a href="#vision" className="hover:text-[#216675] transition-colors">Visión</a>
+                    <a href="#enfoque" className="hover:text-[#216675] transition-colors">Visión</a>
                     <a href="#servicios" className="hover:text-[#216675] transition-colors">Servicios</a>
                     <a href="#diagnostico-section" className="hover:text-[#216675] transition-colors">Diagnóstico</a>
                     <a href="#contacto" className="hover:text-[#216675] transition-colors">Contacto</a>
@@ -248,7 +291,7 @@
                     setStatus('idle');
                     alert('Hubo un error al enviar el diagnóstico. Por favor, intente de nuevo.');
                 }
-            };
+            };    
 
             // Vista de éxito al enviar el formulario
             if (status === 'success') {
@@ -429,6 +472,44 @@
             );
         };
 
+        //Botón dinámico
+        const QuantumContact = () => {
+            const [isOpen, setIsOpen] = useState(false);
+            
+            const contacts = [
+                { icon: 'mail', color: '#655AA4', href: 'mailto:julianssvr@gmail.com', delay: '0.1s', y: -130, x: 0 },
+                { icon: 'linkedin', color: '#0077b5', href: 'https://linkedin.com/in/julianssvr', delay: '0.2s', y: -90, x: 90 },
+                { icon: 'message-circle', color: '#25d366', href: 'https://wa.me/573176406113', delay: '0.3s', y: 0, x: 130 }
+            ];
+
+            return (
+                <div className={`spin-container ${isOpen ? 'open' : ''}`}>
+                    {contacts.map((c, i) => (
+                        <a 
+                            key={i}
+                            href={c.href}
+                            target="_blank"
+                            className="spin-option shadow-lg"
+                            style={{ 
+                                backgroundColor: c.color,
+                                transform: isOpen ? `translate(${c.x}px, ${c.y}px)` : 'translate(0,0)',
+                                transitionDelay: isOpen ? c.delay : '0s'
+                            }}
+                        >
+                            <i data-lucide={c.icon} className="w-5 h-5"></i>
+                        </a>
+                    ))}
+                    <div 
+                        className={`spin-trigger ${isOpen ? 'active' : ''}`}
+                        onClick={() => setIsOpen(!isOpen)}
+                    >
+                        {/* Icono de Spin / Hopfion usando Lucide */}
+                        <i data-lucide="refresh-cw" className={isOpen ? "" : "animate-spin-slow"}></i>
+                    </div>
+                </div>
+            );
+        };
+
         // MAIN APP
         const App = () => {
             useEffect(() => {
@@ -446,6 +527,7 @@
                         <DiagnosticSection />
                     </main>
                     <Footer />
+                    <QuantumContact />
                 </div>
             );
         };
