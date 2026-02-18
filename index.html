@@ -243,39 +243,89 @@
             </section>
         );
 
-        // 6. FOOTER
+        // 6. FOOTER & CONTACTO (Versión Formal)
         const Footer = () => {
-            const whatsappNumber = "+573176406113"; 
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Hola, busco claridad estratégica para mi empresa.`;
+            const phoneNumber = "3176406113";
+            const whatsappUrl = `https://wa.me/57${phoneNumber}?text=Hola%20Julián,%20solicito%20información%20sobre%20el%20diagnóstico%20de%20Sierra%20Analytics.`;
 
             return (
-                <footer id="contacto" className="py-24 px-6 md:px-24 bg-[#FEFEFE] relative text-[#2E3849]">
-                    <div className="max-w-3xl mx-auto text-center space-y-8">
-                        <p className="text-xs uppercase tracking-[0.4em] text-[#216675] font-bold">Conversemos</p>
-                        <h2 className="text-4xl md:text-5xl serif">
-                            ¿Su empresa es flexible o <br/><span className="italic text-[#655AA4]">solo tiene suerte?</span>
-                        </h2>
-                        <p className="text-[#2E3849]/70 font-light leading-relaxed max-w-xl mx-auto">
-                            No deje su estrategia al azar de los promedios. Apliquemos inteligencia sistémica a su operación.
-                        </p>
+                <footer id="contacto" className="py-24 px-6 md:px-24 bg-[#FEFEFE] relative border-t border-[#2E3849]/5 text-[#2E3849]">
+                    <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
                         
-                        <div className="pt-8">
-                             <a 
-                                href={whatsappUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="btn-primary inline-block px-12 py-5 text-xs uppercase tracking-widest font-bold shadow-2xl"
-                            >
-                                Contacto Directo
-                            </a>
+                        {/* Columna Izquierda: Mensaje Estratégico */}
+                        <div className="space-y-8">
+                            <img 
+                                src="./Logo/Horizontal_logo_update.svg" 
+                                alt="Sierra Analytics" 
+                                className="h-10 opacity-90"
+                            />
+                            <h2 className="text-4xl serif leading-tight">
+                                Transforme la incertidumbre en <br/>
+                                <span className="italic text-[#216675]">ventaja competitiva.</span>
+                            </h2>
+                            <p className="text-[#2E3849]/70 font-light leading-relaxed max-w-md">
+                                Consultoría especializada en la arquitectura de decisiones mediante modelos matemáticos avanzados y análisis sistémico de datos.
+                            </p>
+                        </div>
+
+                        {/* Columna Derecha: Información de Contacto Formal */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 bg-[#f4f9f9] p-10 rounded-sm border border-[#2E3849]/5">
+                            <div className="space-y-4">
+                                <p className="text-[10px] uppercase tracking-[0.2em] text-[#216675] font-bold">Canales Directos</p>
+                                <div className="space-y-2">
+                                    <a href={`tel:+57${phoneNumber}`} className="block text-sm font-medium hover:text-[#216675] transition-colors">
+                                        +57 {phoneNumber.slice(0,3)} {phoneNumber.slice(3,6)} {phoneNumber.slice(6)}
+                                    </a>
+                                    <a href="mailto:julianssvr@gmail.com" className="block text-sm font-medium hover:text-[#216675] transition-colors">
+                                        julianssvr@gmail.com
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div className="space-y-4">
+                                <p className="text-[10px] uppercase tracking-[0.2em] text-[#216675] font-bold">Presencia Profesional</p>
+                                <div className="space-y-2">
+                                    <a 
+                                        href="https://linkedin.com/in/julianssvr" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 text-sm font-medium hover:text-[#216675] transition-colors"
+                                    >
+                                        <i data-lucide="linkedin" className="w-4 h-4"></i>
+                                        LinkedIn Perfil
+                                    </a>
+                                    <a 
+                                        href="https://github.com/Emmaquantum" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 text-sm font-medium hover:text-[#216675] transition-colors"
+                                    >
+                                        <i data-lucide="github" className="w-4 h-4"></i>
+                                        GitHub Lab
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div className="sm:col-span-2 pt-6 border-t border-[#2E3849]/10">
+                                <a 
+                                    href={whatsappUrl}
+                                    className="btn-primary w-full text-center inline-block px-8 py-4 text-xs uppercase tracking-widest font-bold shadow-sm"
+                                >
+                                    Agendar Consulta Técnica
+                                </a>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="flex justify-between items-end mt-32 text-[10px] uppercase tracking-[0.2em] text-[#2E3849]/40 border-t border-[#2E3849]/10 pt-8">
-                        <span>© 2026 SIERRA ANALYTICS.</span>
-                        <div className="space-x-6 font-semibold">
-                            <a href="https://www.linkedin.com/in/julianssvr" className="hover:text-[#216675]">LINKEDIN</a>
-                            <a href="#" className="hover:text-[#216675]">SYSTEMS LAB</a>
+                    {/* Copyright & Ubicación */}
+                    <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center mt-24 text-[9px] uppercase tracking-[0.3em] text-[#2E3849]/40 border-t border-[#2E3849]/10 pt-8">
+                        <div className="flex items-center gap-4">
+                            <span>© 2026 SIERRA ANALYTICS.</span>
+                            <span className="w-1 h-1 bg-[#2E3849]/20 rounded-full"></span>
+                            <span>Bogotá, Colombia</span>
+                        </div>
+                        <div className="mt-4 md:mt-0 italic">
+                            Inteligencia Sistémica para la Toma de Decisiones
                         </div>
                     </div>
                 </footer>
