@@ -591,11 +591,15 @@
                         style={{ 
                             backgroundColor: 'transparent', // Fondo transparente
                             border: '1px solid rgba(33, 102, 117, 0.2)', // Borde sutil Teal
-                            backdropFilter: 'blur(8px)'
+                            backdropFilter: 'blur(8px)',
+                            borderRadius: '50%', // Asegura la forma circular
+                            overflow: 'hidden' // CRÍTICO: Esto recorta el canvas si se sale
                         }}
-
                     >
-                    <QuantumHopfion isActive={isOpen} />
+                        {/* Se ajusta ligeramente el tamaño del contenedor interno para no desbordar */}
+                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <QuantumHopfion isActive={isOpen} />
+                        </div>
                     </div>
                 </div>
             );
