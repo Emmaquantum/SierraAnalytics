@@ -284,21 +284,17 @@
                 setStatus('loading');
                 
                 // REEMPLAZA ESTA URL con la que obtuviste de Google Apps Script
-                const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRDv6Tkfocexj3B87FLOjK9nSzQBfcqtSLNKd-ucUowe5QIDpTNptMzph_9Jm7CGkj/exec';
-
-                // Usamos FormData nativo. El navegador se encarga de empaquetarlo sin romper el CORS
-                const formToSubmit = new FormData();
-                formToSubmit.append('nombre', formData.nombre);
-                formToSubmit.append('empresa', formData.empresa);
-                formToSubmit.append('sector', formData.sector);
-                formToSubmit.append('desafio', formData.desafio);
-                formToSubmit.append('email', formData.email);
+                const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhV3SoSjI5g835MhzfQ9r7sUmknyoTl27KFBbbFXJnF3Jy_PEZFGkSDuYa3-_tKbUa/exec';
 
                 try {
                     await fetch(SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors', // Sigue siendo vital para Google Scripts
-                        body: formToSubmit // Quitamos los 'headers' problemáticos
+                        headers: {
+                            // EL TRUCO: Camuflamos el JSON como texto plano para evitar el bloqueo CORS
+                            'Content-Type': 'text/plain;charset=utf-8'
+                        },
+                        body: JSON.stringify(formData
                     });
                     
                     // Si pasa por aquí sin lanzar un error de red, asumimos éxito
