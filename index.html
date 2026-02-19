@@ -577,7 +577,7 @@
                             target="_blank"
                             className="spin-option shadow-lg"
                             style={{ 
-                                backgroundColor: 'rgba(254, 254, 254, 0.1)',
+                                backgroundColor: c.color,
                                 transform: isOpen ? `translate(${c.x}px, ${c.y}px)` : 'translate(0,0)',
                                 transitionDelay: isOpen ? c.delay : '0s'
                             }}
@@ -593,6 +593,7 @@
                             border: '1px solid rgba(33, 102, 117, 0.2)', // Borde sutil Teal
                             backdropFilter: 'blur(8px)'
                         }}
+
                     >
                     <QuantumHopfion isActive={isOpen} />
                     </div>
