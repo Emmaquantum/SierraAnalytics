@@ -286,19 +286,28 @@
                 // REEMPLAZA ESTA URL con la que obtuviste de Google Apps Script
                 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRDv6Tkfocexj3B87FLOjK9nSzQBfcqtSLNKd-ucUowe5QIDpTNptMzph_9Jm7CGkj/exec';
 
+                // Usamos FormData nativo. El navegador se encarga de empaquetarlo sin romper el CORS
+                const formToSubmit = new FormData();
+                formToSubmit.append('nombre', formData.nombre);
+                formToSubmit.append('empresa', formData.empresa);
+                formToSubmit.append('sector', formData.sector);
+                formToSubmit.append('desafio', formData.desafio);
+                formToSubmit.append('email', formData.email);
+
                 try {
                     await fetch(SCRIPT_URL, {
                         method: 'POST',
-                        mode: 'no-cors', 
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-                        body: formBody
+                        mode: 'no-cors', // Sigue siendo vital para Google Scripts
+                        body: formToSubmit // Quitamos los 'headers' problemáticos
                     });
+                    
+                    // Si pasa por aquí sin lanzar un error de red, asumimos éxito
                     setStatus('success');
                     setFormData({ nombre: '', empresa: '', sector: '', desafio: '', email: '' });
                 } catch (error) {
-                    console.error('Error al enviar datos:', error);
+                    console.error('Error de red detectado:', error);
                     setStatus('idle');
-                    alert('Hubo un error al enviar el diagnóstico. Por favor, intente de nuevo.');
+                    alert('Hubo un error de conexión al enviar el diagnóstico. Por favor, intente de nuevo.');
                 }
             };    
 
