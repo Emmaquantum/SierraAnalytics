@@ -588,6 +588,11 @@
                     <div 
                         className={`spin-trigger ${isOpen ? 'active' : ''}`}
                         onClick={() => setIsOpen(!isOpen)}
+                        style={{ 
+                            backgroundColor: 'transparent', // Fondo transparente
+                            border: '1px solid rgba(33, 102, 117, 0.2)', // Borde sutil Teal
+                            backdropFilter: 'blur(8px)'
+                        }}
                     >
                     <QuantumHopfion isActive={isOpen} />
                     </div>
