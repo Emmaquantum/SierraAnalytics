@@ -421,12 +421,21 @@
                                         onChange={e => setFormData({...formData, empresa: e.target.value})}
                                         value={formData.empresa}
                                     />
-                                    <input 
-                                        type="text" placeholder="Sector" required
-                                        className="w-full p-4 bg-white border border-[#2E3849]/10 text-sm focus:outline-none focus:border-[#216675] transition-colors"
+                                    <select 
+                                        required
+                                        className="w-full p-4 bg-white border border-[#2E3849]/10 text-sm focus:outline-none focus:border-[#216675] transition-colors appearance-none text-[#2E3849]"
                                         onChange={e => setFormData({...formData, sector: e.target.value})}
                                         value={formData.sector}
-                                    />
+                                    >
+                                        <option value="" disabled>Seleccione su sector estratégico</option>
+                                        <option value="Logística y Cadena de Suministro">Logística y Cadena de Suministro</option>
+                                        <option value="Manufactura y Operaciones">Manufactura y Operaciones</option>
+                                        <option value="Retail y Consumo Masivo">Retail y Consumo Masivo</option>
+                                        <option value="Finanzas y Gestión de Riesgo">Finanzas y Gestión de Riesgo</option>
+                                        <option value="Agroindustria y Materias Primas">Agroindustria y Materias Primas</option>
+                                        <option value="Salud y Farmacéutica">Salud y Farmacéutica</option>
+                                        <option value="Otro">Otro (Especificar en el análisis)</option>
+                                    </select>
                                 </div>
                             </div>
 
