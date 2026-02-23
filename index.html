@@ -214,7 +214,7 @@
             useEffect(() => {
                 const interval = setInterval(() => {
                     setActiveSlide((prev) => (prev + 1) % slides.length);
-                }, 6500); // El texto cambia cada 6.5 segundos para dar tiempo a leer
+                }, 10000); // El texto cambia cada 6.5 segundos para dar tiempo a leer
                 return () => clearInterval(interval);
             }, [slides.length]);
 
