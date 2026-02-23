@@ -189,6 +189,11 @@
 
             // Los textos extraídos directamente de tu narrativa (Reglas 5, 6, 1, 2, 4, 7)
             const slides = [
+                 {
+                    tag: "El Valor del Mercado",
+                    title: <>Su empresa habla en datos. <br/><span className="serif italic text-[#216675]">El mercado habla en dinámicas.</span></>,
+                    text: "Conectamos su estrategia con el entorno real mediante modelos matemáticos, optimizando su estructura para que deje de perder rentabilidad."
+                },
                 {
                     tag: "La Ilusión de Control",
                     title: <>Miras tus indicadores, <br/><span className="serif italic text-[#216675]">buscando algo diferente.</span></>,
@@ -203,18 +208,14 @@
                     tag: "La Analogía Cósmica",
                     title: <>Los grandes descubrimientos <br/><span className="serif italic text-[#216675]">nacen de anomalías.</span></>,
                     text: "El ligero tambaleo de un astro, un destello fuera de lugar. El cosmos esconde sus secretos en los extremos. Tu empresa funciona igual, pero tú sigues obsesionado con encajar en un molde seguro."
-                },
-                {
-                    tag: "El Valor del Mercado",
-                    title: <>Su empresa habla en datos. <br/><span className="serif italic text-[#216675]">El mercado habla en dinámicas.</span></>,
-                    text: "Conectamos su estrategia con el entorno real mediante modelos matemáticos, optimizando su estructura para que deje de perder rentabilidad."
                 }
+               
             ];
 
             useEffect(() => {
                 const interval = setInterval(() => {
                     setActiveSlide((prev) => (prev + 1) % slides.length);
-                }, 15000); // El texto cambia cada 6.5 segundos para dar tiempo a leer
+                }, 25000); // El texto cambia cada 6.5 segundos para dar tiempo a leer
                 return () => clearInterval(interval);
             }, [slides.length]);
 
