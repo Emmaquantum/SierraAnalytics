@@ -184,35 +184,97 @@
         );
 
         // 3. HERO SECTION
-        const Hero = () => (
-            <section className="min-h-screen flex flex-col md:flex-row pt-32 px-6 md:px-24 items-center relative overflow-hidden bg-[#FEFEFE]">
-                <div className="absolute inset-0 math-grid -z-10"></div>
-                
-                <div className="w-full md:w-3/5 z-10 space-y-8 pr-0 md:pr-12">
-                    <p className="text-[#216675] text-xs font-bold tracking-[0.3em] uppercase mb-4 flex items-center gap-2">
-                        <span className="w-8 h-[1px] bg-[#216675]"></span>
-                        Expertise en Sistemas Dinámicos
-                    </p>
-                    <h1 className="text-5xl md:text-6xl lg:text-7xl leading-[1.1] text-[#2E3849]">
-                        Su empresa habla un idioma.<br/>
-                        <span className="serif italic text-[#216675]">El mercado habla otro.</span>
-                    </h1>
-                    <p className="text-[#2E3849]/80 max-w-lg text-lg leading-relaxed font-light mt-8">
-                        Ayudamos a empresas a conectar su estrategia con el entorno mediante ciencia de datos, análisis topológico y sistemas dinámicos. 
-                        <strong> Rigor matemático para optimizar la estructura de su empresa y la efectividad de sus decisiones.</strong>
-                    </p>
-                    <div className="pt-8">
-                        <a href="#Consultoría" className="btn-primary px-10 py-4 inline-block text-xs uppercase tracking-widest font-bold shadow-lg">
-                            Agendar Consultoría
-                        </a>
-                    </div>
-                </div>
+        const Hero = () => {
+            const [activeSlide, setActiveSlide] = useState(0);
 
-                <div className="w-full md:w-2/5 h-[45vh] md:h-auto relative mt-12 md:mt-0 flex items-center justify-center">
-                    <SystemicVisual />
-                </div>
-            </section>
-        );
+            // Los textos extraídos directamente de tu narrativa (Reglas 5, 6, 1, 2, 4, 7)
+            const slides = [
+                {
+                    tag: "La Ilusión de Control",
+                    title: <>Miras al centro del universo. <br/><span className="serif italic text-[#216675]">Buscas lo normal.</span></>,
+                    text: "Sientes que pierdes tus más grandes oportunidades. Tu normalidad esconde las mayores amenazas y glorias. Sabes que debes despertar y dejar de sentir una falsa seguridad."
+                },
+                {
+                    tag: "El Punto Ciego",
+                    title: <>Esa tranquilidad temporal es <br/><span className="serif italic text-[#216675]">frágil y tú lo sabes.</span></>,
+                    text: "Se desmorona en la madrugada, cuando entiendes que el mercado es caótico. Te frustra tener montañas de datos y seguir sintiendo que te faltan respuestas reales para maniobrar."
+                },
+                {
+                    tag: "La Analogía Cósmica",
+                    title: <>Los grandes descubrimientos <br/><span className="serif italic text-[#216675]">nacen de anomalías.</span></>,
+                    text: "El ligero tambaleo de un astro, un destello fuera de lugar. El cosmos esconde sus secretos en los extremos. Tu empresa funciona igual, pero tú sigues obsesionado con encajar en un molde seguro."
+                },
+                {
+                    tag: "El Valor del Ruido",
+                    title: <>Deja de automatizar tu <br/><span className="serif italic text-[#216675]">miopía con datos comunes.</span></>,
+                    text: "En Sierra Analytics sabemos que lo inusual es una señal. Cruzamos tu instinto con nuestros modelos para detectar lazos de inestabilidad y efectos en cadena mucho antes de que sean evidentes."
+                }
+            ];
+
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setActiveSlide((prev) => (prev + 1) % slides.length);
+                }, 6500); // El texto cambia cada 6.5 segundos para dar tiempo a leer
+                return () => clearInterval(interval);
+            }, [slides.length]);
+
+            return (
+                <section className="min-h-screen flex flex-col md:flex-row pt-32 px-6 md:px-24 items-center relative overflow-hidden bg-[#FEFEFE]">
+                    <div className="absolute inset-0 math-grid -z-10"></div>
+                    
+                    {/* Contenedor del Slider de Texto */}
+                    <div className="w-full md:w-3/5 z-10 pr-0 md:pr-12">
+                        <div className="relative h-[380px] md:h-[300px] w-full">
+                            {slides.map((slide, index) => (
+                                <div 
+                                    key={index}
+                                    className={`absolute top-0 left-0 w-full transition-all duration-1000 ease-in-out ${
+                                        activeSlide === index 
+                                            ? 'opacity-100 translate-y-0 pointer-events-auto' 
+                                            : 'opacity-0 translate-y-4 pointer-events-none'
+                                    }`}
+                                >
+                                    <p className="text-[#216675] text-xs font-bold tracking-[0.3em] uppercase mb-4 flex items-center gap-2">
+                                        <span className="w-8 h-[1px] bg-[#216675]"></span>
+                                        {slide.tag}
+                                    </p>
+                                    <h1 className="text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-[#2E3849]">
+                                        {slide.title}
+                                    </h1>
+                                    <p className="text-[#2E3849]/80 max-w-lg text-lg leading-relaxed font-light mt-8">
+                                        {slide.text}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Botón estático y controles del slider */}
+                        <div className="mt-4 flex flex-col md:flex-row items-start md:items-center gap-8">
+                            <a href="#diagnostico-section" className="btn-primary px-10 py-4 inline-block text-xs uppercase tracking-widest font-bold shadow-lg">
+                                Agendar Consultoría
+                            </a>
+                            <div className="flex gap-2">
+                                {slides.map((_, idx) => (
+                                    <button 
+                                        key={idx}
+                                        onClick={() => setActiveSlide(idx)}
+                                        className={`h-1.5 transition-all duration-500 rounded-full ${
+                                            activeSlide === idx ? 'w-8 bg-[#216675]' : 'w-2 bg-[#2E3849]/20 hover:bg-[#216675]/50'
+                                        }`}
+                                        aria-label={`Ir a narrativa ${idx + 1}`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Gráfico estático en su lugar */}
+                    <div className="w-full md:w-2/5 h-[45vh] md:h-auto relative mt-12 md:mt-0 flex items-center justify-center">
+                        <SystemicVisual />
+                    </div>
+                </section>
+            );
+        };
 
         // 4. PROBLEM SECTION
         const ProblemSection = () => (
