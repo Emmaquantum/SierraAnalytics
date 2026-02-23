@@ -423,11 +423,13 @@
                                     />
                                     <select 
                                         required
-                                        className="w-full p-4 bg-white border border-[#2E3849]/10 text-sm focus:outline-none focus:border-[#216675] transition-colors appearance-none text-[#2E3849]"
+                                        className={`w-full p-4 bg-white border border-[#2E3849]/10 text-sm focus:outline-none focus:border-[#216675] transition-colors appearance-none ${formData.sector === '' ? 'text-[#9ca3af]' : 'text-[#2E3849]'}`}
                                         onChange={e => setFormData({...formData, sector: e.target.value})}
                                         value={formData.sector}
                                     >
-                                        <option value="" disabled>Seleccione su sector estratégico</option>
+                                        <option value="" disabled className="text-[#9ca3af]">
+                                            Seleccione su sector estratégico
+                                        </option>
                                         <option value="Logística y Cadena de Suministro">Logística y Cadena de Suministro</option>
                                         <option value="Manufactura y Operaciones">Manufactura y Operaciones</option>
                                         <option value="Retail y Consumo Masivo">Retail y Consumo Masivo</option>
